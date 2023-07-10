@@ -23,7 +23,7 @@ export const hendleOnSearchFormInput = async event => {
     return await (refs.searchFormBtnSubmit.disabled = false);
   }
 };
-
+//===========================Before=================================
 // export const hendleSearchFormBtnSubmitClick = async event => {
 //   event.preventDefault();
 
@@ -79,6 +79,7 @@ export const hendleOnSearchFormInput = async event => {
 //   });
 // };
 
+//=====================================after==================================
 export const hendleSearchFormBtnSubmitClick = async event => {
   event.preventDefault();
 
@@ -123,7 +124,7 @@ export const hendleLoadMoreBtnClick = async () => {
     const response = await getAsked(inputedData, pageNumber, perPage);
     const { hits } = response.data;
     refs.galleryWrapper.insertAdjacentHTML('beforeend', createMarkup(hits));
-
+    smoothScrollGalleryList();
     if (perPageGroupNumber === pageNumber) {
       refs.loadMoreBtnSubmit.hidden = true;
       return Notify.failure(
@@ -137,7 +138,19 @@ export const hendleLoadMoreBtnClick = async () => {
   }
 };
 
-//=================кнопка прокруутки
+//===========================плавний скрол===
+export const smoothScrollGalleryList = () => {
+  const { height: cardHeight } = document
+    .querySelector('.gallery')
+    .firstElementChild.getBoundingClientRect();
+
+  window.scrollBy({
+    top: cardHeight * 2,
+    behavior: 'smooth',
+  });
+};
+
+//=================кнопка прокрутки================
 export const btnUp = {
   el: document.querySelector('.btn-up'),
   show() {
