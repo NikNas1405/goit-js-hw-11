@@ -25,6 +25,9 @@ export async function getAsked(inputedData, pageNumber, perPage) {
   }
 }
 
+
+
+
 // const getAsked = async inputedData => {
 //   return await axios.get(`${BASE_URL}`, {
 //     params: {

@@ -2,6 +2,7 @@ import {
   hendleSearchFormBtnSubmitClick,
   hendleOnSearchFormInput,
   hendleLoadMoreBtnClick,
+  btnUp,
 } from './js/callback';
 
 import { getRefs } from './js/refs';
@@ -18,36 +19,7 @@ refs.searchFormEl.addEventListener('submit', hendleSearchFormBtnSubmitClick);
 
 refs.loadMoreBtnSubmit.addEventListener('click', hendleLoadMoreBtnClick);
 
-
-
-
-//=================кнопка прокруутки
-const btnUp = {
-  el: document.querySelector('.btn-up'),
-  show() {
-    this.el.classList.remove('btn-up_hide');
-  },
-  hide() {
-    this.el.classList.add('btn-up_hide');
-  },
-  addEventListener() {
-    window.addEventListener('scroll', () => {
-      const scrollY = window.scrollY || document.documentElement.scrollTop;
-       scrollY > 400 ? this.show() : this.hide();
-    });
-    document.querySelector('.btn-up').onclick = () => {
-            window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: 'smooth',
-      });
-    };
-  },
-};
-
 btnUp.addEventListener();
-
-
 
 // Прокручування сторінки
 // Зробити плавне прокручування сторінки після запиту і відтворення кожної наступної групи зображень. Ось тобі код-підказка, але розберися у ньому самостійно.

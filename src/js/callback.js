@@ -12,6 +12,9 @@ let perPageGroupNumber = 1;
 let perPage = 40;
 let inputedData = '';
 
+let lightbox = new SimpleLightbox('.gallery a', {
+  captionDelay: 250,
+});
 
 export const hendleOnSearchFormInput = async event => {
   if (!event.target.value.trim()) {
@@ -21,17 +24,11 @@ export const hendleOnSearchFormInput = async event => {
   }
 };
 
-
 export const hendleSearchFormBtnSubmitClick = async event => {
   event.preventDefault();
 
   refs.galleryWrapper.innerHTML = '';
   inputedData = refs.formInputRef.value.trim();
-
-  // if (!inputedData) {
-  //   refs.loadMoreBtnSubmit.hidden = true;
-  //   return Notify.failure(`We're sorry, but you didn't set search terms`);
-  // }
 
   await getAsked(inputedData)
     .then(res => {
@@ -56,10 +53,7 @@ export const hendleSearchFormBtnSubmitClick = async event => {
 
       //   console.log(res);
       refs.galleryWrapper.insertAdjacentHTML('beforeend', createMarkup(hits));
-      let lightbox = new SimpleLightbox('.gallery a', {
-        captionsData: 'alt',
-        captionDelay: 250,
-      });
+      lightbox.refresh();
       return Notify.success(`Hooray.  We found  ${totalHits} images.`);
     })
     .catch(error => {
@@ -76,13 +70,7 @@ export const hendleLoadMoreBtnClick = async () => {
     const { hits } = response.data;
 
     refs.galleryWrapper.insertAdjacentHTML('beforeend', createMarkup(hits));
-    let lightbox = new SimpleLightbox('.gallery a', {
-      doubleTapZoom: '1.2',
-      captionsData: 'data-parent',
-      captionDelay: 250,
-    });
 
-    lightbox.refresh();
     if (perPageGroupNumber === pageNumber) {
       refs.loadMoreBtnSubmit.hidden = true;
       return Notify.failure(
@@ -90,4 +78,28 @@ export const hendleLoadMoreBtnClick = async () => {
       );
     }
   });
+};
+
+//=================кнопка прокруутки
+export const btnUp = {
+  el: document.querySelector('.btn-up'),
+  show() {
+    this.el.classList.remove('btn-up_hide');
+  },
+  hide() {
+    this.el.classList.add('btn-up_hide');
+  },
+  addEventListener() {
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY || document.documentElement.scrollTop;
+      scrollY > 400 ? this.show() : this.hide();
+    });
+    document.querySelector('.btn-up').onclick = () => {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth',
+      });
+    };
+  },
 };
